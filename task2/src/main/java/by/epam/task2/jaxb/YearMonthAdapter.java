@@ -1,4 +1,4 @@
-package by.epam.task2.parser;
+package by.epam.task2.jaxb;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.YearMonth;

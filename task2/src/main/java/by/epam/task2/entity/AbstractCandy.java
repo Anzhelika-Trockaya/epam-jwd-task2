@@ -1,6 +1,6 @@
 package by.epam.task2.entity;
 
-import by.epam.task2.parser.YearMonthAdapter;
+import by.epam.task2.jaxb.YearMonthAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -10,27 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlType(propOrder = {"name", "production", "expirationDate", "ingredients", "energy", "value"}, name = "candy")
-public abstract class Candy implements Serializable {
+public abstract class AbstractCandy implements Serializable {
     private static final long serialVersionUID = -3277035596610997101L;
     private String vendorCode;
     private String name;
-
     private YearMonth expirationDate;
     private int energy;
     private Value value;
-
     private List<Ingredient> ingredients;
     private Production production;
 
     {
         ingredients = new ArrayList<>();
-        value=new Value();
+        value = new Value();
     }
 
-    public Candy() {
+    public AbstractCandy() {
     }
 
-    public Candy(String vendorCode, String name, YearMonth expirationDate, int energy, Value value, List<Ingredient> ingredients, Production production) {
+    public AbstractCandy(String vendorCode, String name, YearMonth expirationDate, int energy, Value value, List<Ingredient> ingredients, Production production) {
         this.vendorCode = vendorCode;
         this.name = name;
         this.expirationDate = expirationDate;
@@ -84,7 +82,9 @@ public abstract class Candy implements Serializable {
     }
 
     public void setValue(Value value) {
-        this.value = value;
+        this.value.setCarbohydrates(value.getCarbohydrates());
+        this.value.setProteins(value.getProteins());
+        this.value.setFats(value.getFats());
     }
 
     @XmlElementWrapper(name = "ingredients")
@@ -113,7 +113,7 @@ public abstract class Candy implements Serializable {
         if (o == null || o.getClass() != this.getClass()) {
             return false;
         }
-        Candy candy = (Candy) o;
+        AbstractCandy candy = (AbstractCandy) o;
         if (candy.expirationDate == null ? expirationDate != null : !(candy.expirationDate.equals(expirationDate))) {
             return false;
         }
@@ -142,13 +142,15 @@ public abstract class Candy implements Serializable {
     }
 
     @Override
-    public String toString() {//fixme: or getString???
-        return "vendorCode='" + vendorCode + '\'' +
-                ", name='" + name + '\'' +
-                ", expirationDate=" + expirationDate +
-                ", energy=" + energy +
-                ", value=" + value +
-                ", ingredients=" + ingredients +
-                ", production=" + production;
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("vendorCode='").append(vendorCode).append('\'').
+                append(", name='").append(name).append('\'').
+                append(", expirationDate=").append(expirationDate).
+                append(", energy=").append(energy).
+                append(", value=").append(value).
+                append(", ingredients=").append(ingredients).
+                append(", production=").append(production);
+        return builder.toString();
     }
 }

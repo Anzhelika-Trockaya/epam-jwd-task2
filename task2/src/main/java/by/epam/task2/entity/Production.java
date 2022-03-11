@@ -1,5 +1,7 @@
 package by.epam.task2.entity;
 
+import by.epam.task2.exception.ParseXMLException;
+
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
@@ -35,12 +37,12 @@ public enum Production {
         return name;
     }
 
-    public static Production getProduction(String name) {
+    public static Production getProduction(String name) throws ParseXMLException {
         for (Production production : Production.values()) {
             if(name.equals(production.getName())){
                 return production;
             }
         }
-        return null;//todo throw new XMLParserException();
+        throw new ParseXMLException("Unknown production name '"+name+"'");
     }
 }

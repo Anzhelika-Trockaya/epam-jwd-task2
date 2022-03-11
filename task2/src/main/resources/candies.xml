@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <candies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:noNamespaceSchemaLocation="candies.xsd">
-    <chocolate-candy vendor-code="1111111">
+    <chocolate-candy vendor-code="A-1111111">
         <name>Berezka</name>
         <production>Spartak</production>
         <expiration-date>2023-03</expiration-date>
@@ -23,7 +23,55 @@
         </value>
         <chocolate-type>Dark</chocolate-type>
     </chocolate-candy>
-    <chocolate-candy filling="Milk chocolate mass" vendor-code="589614">
+    <chocolate-candy filling="Hazelnut" vendor-code="A-848586">
+        <name>Teddy bear in the meadow</name>
+        <production>Kommunarka</production>
+        <expiration-date>2023-05</expiration-date>
+        <ingredients>
+            <ingredient>
+                <ingredient-name>Cacao</ingredient-name>
+                <weight>25</weight>
+            </ingredient>
+            <ingredient>
+                <ingredient-name>Water</ingredient-name>
+                <weight>10</weight>
+            </ingredient>
+        </ingredients>
+        <energy>760</energy>
+        <value>
+            <carbohydrates>550</carbohydrates>
+            <fats>24</fats>
+            <proteins>325</proteins>
+        </value>
+        <chocolate-type>Milk</chocolate-type>
+    </chocolate-candy>
+    <chocolate-candy vendor-code="A-777814" filling="Peanut">
+        <name>Choconut</name>
+        <production>Peter Ronnen</production>
+        <expiration-date>2023-02</expiration-date>
+        <ingredients>
+            <ingredient>
+                <ingredient-name>Cacao</ingredient-name>
+                <weight>23</weight>
+            </ingredient>
+            <ingredient>
+                <ingredient-name>Water</ingredient-name>
+                <weight>5</weight>
+            </ingredient>
+            <ingredient>
+                <ingredient-name>Peanut</ingredient-name>
+                <weight>45</weight>
+            </ingredient>
+        </ingredients>
+        <energy>754</energy>
+        <value>
+            <carbohydrates>642</carbohydrates>
+            <fats>65</fats>
+            <proteins>12</proteins>
+        </value>
+        <chocolate-type>Dark</chocolate-type>
+    </chocolate-candy>
+    <chocolate-candy filling="Milk chocolate mass" vendor-code="A-589614">
         <name>Alenka</name>
         <production>Roshen</production>
         <expiration-date>2023-02</expiration-date>
@@ -45,7 +93,7 @@
         </value>
         <chocolate-type>Milk</chocolate-type>
     </chocolate-candy>
-    <caramel-candy vendor-code="123456">
+    <caramel-candy vendor-code="A-123456">
         <name>Duchesse</name>
         <production>Kommunarka</production>
         <expiration-date>2022-09</expiration-date>
@@ -68,7 +116,7 @@
         <flavor>Duchesse</flavor>
         <lollipop>false</lollipop>
     </caramel-candy>
-    <caramel-candy vendor-code="4521365">
+    <caramel-candy vendor-code="A-4521365">
         <name>Chupa Chups</name>
         <production>Chupa Chups</production>
         <expiration-date>2023-10</expiration-date>
@@ -95,7 +143,7 @@
         <flavor>Strawberry</flavor>
         <lollipop>true</lollipop>
     </caramel-candy>
-    <caramel-candy vendor-code="1145214">
+    <caramel-candy vendor-code="A-1145214">
         <name>Chupa Chups XXL</name>
         <production>Chupa Chups</production>
         <expiration-date>2022-12</expiration-date>
@@ -122,7 +170,7 @@
         <flavor>Apple</flavor>
         <lollipop>true</lollipop>
     </caramel-candy>
-    <caramel-candy vendor-code="2245">
+    <caramel-candy vendor-code="A-2245">
         <name>Solyariki</name>
         <production>Solyariki</production>
         <expiration-date>2023-02</expiration-date>
@@ -145,7 +193,7 @@
         <flavor>Orange</flavor>
         <lollipop>true</lollipop>
     </caramel-candy>
-    <caramel-candy vendor-code="2222222">
+    <caramel-candy vendor-code="A-2222222">
         <name>Rikki</name>
         <production>Rikki</production>
         <expiration-date>2022-10</expiration-date>
@@ -168,7 +216,7 @@
         <flavor>Mint</flavor>
         <lollipop>false</lollipop>
     </caramel-candy>
-    <caramel-candy vendor-code="353535">
+    <caramel-candy vendor-code="A-353535">
         <name>Konti</name>
         <production>Konti</production>
         <expiration-date>2023-10</expiration-date>
@@ -195,55 +243,7 @@
         <flavor>Caramel</flavor>
         <lollipop>false</lollipop>
     </caramel-candy>
-    <chocolate-candy filling="Hazelnut" vendor-code="848586">
-        <name>Teddy bear in the meadow</name>
-        <production>Kommunarka</production>
-        <expiration-date>2023-05</expiration-date>
-        <ingredients>
-            <ingredient>
-                <ingredient-name>Cacao</ingredient-name>
-                <weight>25</weight>
-            </ingredient>
-            <ingredient>
-                <ingredient-name>Water</ingredient-name>
-                <weight>10</weight>
-            </ingredient>
-        </ingredients>
-        <energy>760</energy>
-        <value>
-            <carbohydrates>550</carbohydrates>
-            <fats>24</fats>
-            <proteins>325</proteins>
-        </value>
-        <chocolate-type>Milk</chocolate-type>
-    </chocolate-candy>
-    <chocolate-candy filling="Peanut" vendor-code="777814">
-        <name>Choconut</name>
-        <production>Peter Ronnen</production>
-        <expiration-date>2023-02</expiration-date>
-        <ingredients>
-            <ingredient>
-                <ingredient-name>Cacao</ingredient-name>
-                <weight>23</weight>
-            </ingredient>
-            <ingredient>
-                <ingredient-name>Water</ingredient-name>
-                <weight>5</weight>
-            </ingredient>
-            <ingredient>
-                <ingredient-name>Peanut</ingredient-name>
-                <weight>45</weight>
-            </ingredient>
-        </ingredients>
-        <energy>754</energy>
-        <value>
-            <carbohydrates>642</carbohydrates>
-            <fats>65</fats>
-            <proteins>12</proteins>
-        </value>
-        <chocolate-type>Dark</chocolate-type>
-    </chocolate-candy>
-    <chocolate-candy filling="Marmalade" vendor-code="66547">
+    <chocolate-candy filling="Marmalade" vendor-code="A-66547">
         <name>Sladunitsa</name>
         <production>Kommunarka</production>
         <expiration-date>2023-04</expiration-date>
@@ -269,7 +269,7 @@
         </value>
         <chocolate-type>Milk</chocolate-type>
     </chocolate-candy>
-    <chocolate-candy filling="Peanut, Caramel" vendor-code="555614">
+    <chocolate-candy filling="Peanut, Caramel" vendor-code="A-555614">
         <name>Peanuts</name>
         <production>Spartak</production>
         <expiration-date>2022-03</expiration-date>
@@ -291,7 +291,7 @@
         </value>
         <chocolate-type>Milk</chocolate-type>
     </chocolate-candy>
-    <chocolate-candy vendor-code="22256">
+    <chocolate-candy vendor-code="A-22256">
         <name>Sorvanets</name>
         <production>Kommunarka</production>
         <expiration-date>2023-09</expiration-date>
@@ -313,7 +313,7 @@
         </value>
         <chocolate-type>Dark</chocolate-type>
     </chocolate-candy>
-    <chocolate-candy vendor-code="365554">
+    <chocolate-candy vendor-code="A-365554">
         <name>Red hat</name>
         <production>Kommunarka</production>
         <expiration-date>2023-11</expiration-date>
@@ -335,7 +335,7 @@
         </value>
         <chocolate-type>Milk</chocolate-type>
     </chocolate-candy>
-    <chocolate-candy vendor-code="463222">
+    <chocolate-candy vendor-code="A-463222">
         <name>Kommunarka</name>
         <production>Kommunarka</production>
         <expiration-date>2022-12</expiration-date>
@@ -357,7 +357,7 @@
         </value>
         <chocolate-type>White</chocolate-type>
     </chocolate-candy>
-    <chocolate-candy filling="Peanut Caramel Nougat" vendor-code="11898921">
+    <chocolate-candy filling="Peanut Caramel Nougat" vendor-code="A-11898921">
         <name>Snickers</name>
         <production>Snickers</production>
         <expiration-date>2023-08</expiration-date>

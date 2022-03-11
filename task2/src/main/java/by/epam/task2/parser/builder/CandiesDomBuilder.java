@@ -1,7 +1,9 @@
-package by.epam.task2.builder.impl;
+package by.epam.task2.parser.builder;
 
-import by.epam.task2.builder.CandiesBuilder;
 import by.epam.task2.entity.*;
+import by.epam.task2.exception.ParseXMLException;
+import by.epam.task2.parser.CandyXmlAttribute;
+import by.epam.task2.parser.CandyXmlTag;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,7 +18,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CandiesDomBuilder extends CandiesBuilder {
+public class CandiesDomBuilder extends AbstractCandiesBuilder {
     private DocumentBuilder docBuilder;//fixme final?
 
     public CandiesDomBuilder() {
@@ -24,7 +26,7 @@ public class CandiesDomBuilder extends CandiesBuilder {
         try {
             docBuilder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            //todo log
+            //fixme log
         }
     }
 
@@ -34,66 +36,67 @@ public class CandiesDomBuilder extends CandiesBuilder {
         try {
             doc = docBuilder.parse(fileName);
             Element root = doc.getDocumentElement();
-            NodeList caramelCandiesList = root.getElementsByTagName("caramel-candy");
-            NodeList chocolateCandiesList = root.getElementsByTagName("chocolate-candy");
+            NodeList caramelCandiesList = root.getElementsByTagName(CandyXmlTag.CARAMEL_CANDY.getName());
+            NodeList chocolateCandiesList = root.getElementsByTagName(CandyXmlTag.CHOCOLATE_CANDY.getName());
             for (int i = 0; i < caramelCandiesList.getLength(); i++) {
                 Element candyElement = (Element) caramelCandiesList.item(i);
-                Candy candy = buildCaramelCandy(candyElement);
+                AbstractCandy candy = buildCaramelCandy(candyElement);
                 candies.add(candy);
             }
             for (int i = 0; i < chocolateCandiesList.getLength(); i++) {
                 Element candyElement = (Element) chocolateCandiesList.item(i);
-                Candy candy = buildChocolateCandy(candyElement);
+                AbstractCandy candy = buildChocolateCandy(candyElement);
                 candies.add(candy);
             }
-        } catch (IOException | SAXException exception) {
+        } catch (IOException | SAXException | ParseXMLException exception) {
             //todo log
         }
     }
 
-    private Candy buildChocolateCandy(Element candyElement) {
+    private AbstractCandy buildChocolateCandy(Element candyElement) throws ParseXMLException {
         ChocolateCandy candy = new ChocolateCandy();
         buildCandy(candy, candyElement);
-        if(candyElement.hasAttribute("filling")){
-            candy.setFilling(candyElement.getAttribute( "filling"));
+        String fillingAttr = CandyXmlAttribute.FILLING.getName();
+        if(candyElement.hasAttribute(fillingAttr)){
+            candy.setFilling(candyElement.getAttribute(fillingAttr));
         }
         candy.setChocolateType(getElementChocolateType(candyElement));
         return candy;
     }
 
-    private Candy buildCaramelCandy(Element candyElement) {
+    private AbstractCandy buildCaramelCandy(Element candyElement) throws ParseXMLException {
         CaramelCandy candy = new CaramelCandy();
         buildCandy(candy, candyElement);
-        candy.setFlavor(getElementTextContent(candyElement, "flavor"));
-        candy.setLollipop(getElementBooleanContent(candyElement, "lollipop"));
+        candy.setFlavor(getElementTextContent(candyElement, CandyXmlTag.FLAVOR.getName()));
+        candy.setLollipop(getElementBooleanContent(candyElement, CandyXmlTag.LOLLIPOP.getName()));
         return candy;
     }
 
 
-    private void buildCandy(Candy candy, Element candyElement) {
-        candy.setVendorCode(candyElement.getAttribute("vendor-code"));
-        candy.setName(getElementTextContent(candyElement, "name"));
+    private void buildCandy(AbstractCandy candy, Element candyElement) throws ParseXMLException {
+        candy.setVendorCode(candyElement.getAttribute(CandyXmlAttribute.VENDOR_CODE.getName()));
+        candy.setName(getElementTextContent(candyElement, CandyXmlTag.CANDY_NAME.getName()));
         candy.setProduction(getElementProductionValue(candyElement));
-        candy.setExpirationDate(getElementYearMonthContent(candyElement, "expiration-date"));
+        candy.setExpirationDate(getElementYearMonthContent(candyElement, CandyXmlTag.EXPIRATION_DATE.getName()));
         candy.setIngredients(getIngredientsList(candyElement));
-        candy.setEnergy(getElementIntContent(candyElement, "energy"));
+        candy.setEnergy(getElementIntContent(candyElement, CandyXmlTag.ENERGY.getName()));
         candy.setValue(buildValue(candyElement));
     }
 
     private Value buildValue(Element candyElement) {
-        NodeList valueList = candyElement.getElementsByTagName("value");
+        NodeList valueList = candyElement.getElementsByTagName(CandyXmlTag.VALUE.getName());
         Element valueElement = (Element) valueList.item(0);
         Value value = new Value();
-        value.setCarbohydrates(getElementIntContent(valueElement, "carbohydrates"));
-        value.setFats(getElementIntContent(valueElement, "fats"));
-        value.setProteins(getElementIntContent(valueElement, "proteins"));
+        value.setCarbohydrates(getElementIntContent(valueElement, CandyXmlTag.CARBOHYDRATES.getName()));
+        value.setFats(getElementIntContent(valueElement, CandyXmlTag.FATS.getName()));
+        value.setProteins(getElementIntContent(valueElement, CandyXmlTag.PROTEINS.getName()));
         return value;
     }
 
     private List<Ingredient> getIngredientsList(Element element) {
-        NodeList nodeList = element.getElementsByTagName("ingredients");
+        NodeList nodeList = element.getElementsByTagName(CandyXmlTag.INGREDIENTS.getName());
         Element ingredientsNode = (Element)nodeList.item(0);
-        NodeList ingredientNodeList = ingredientsNode.getElementsByTagName("ingredient");
+        NodeList ingredientNodeList = ingredientsNode.getElementsByTagName(CandyXmlTag.INGREDIENT.getName());
         List<Ingredient> ingredients = new ArrayList<>();
         for (int i = 0; i < ingredientNodeList.getLength(); i++) {
             ingredients.add(buildIngredient(ingredientNodeList.item(i)));
@@ -104,8 +107,8 @@ public class CandiesDomBuilder extends CandiesBuilder {
     private Ingredient buildIngredient(Node node) {
         Ingredient ingredient = new Ingredient();
         Element element = (Element) node;
-        String name = getElementTextContent(element, "ingredient-name");
-        int weight = getElementIntContent(element, "weight");
+        String name = getElementTextContent(element, CandyXmlTag.INGREDIENT_NAME.getName());
+        int weight = getElementIntContent(element, CandyXmlTag.WEIGHT.getName());
         ingredient.setName(name);
         ingredient.setWeight(weight);
         return ingredient;
@@ -123,13 +126,13 @@ public class CandiesDomBuilder extends CandiesBuilder {
         return node.getTextContent();
     }
 
-    private Production getElementProductionValue(Element element) {//todo T method
-        String productionName = getElementTextContent(element, "production");
+    private Production getElementProductionValue(Element element) throws ParseXMLException {
+        String productionName = getElementTextContent(element, CandyXmlTag.PRODUCTION.getName());
         return Production.getProduction(productionName);
     }
 
-    private ChocolateType getElementChocolateType(Element element) {
-        String typeName = getElementTextContent(element, "chocolate-type");
+    private ChocolateType getElementChocolateType(Element element) throws ParseXMLException {
+        String typeName = getElementTextContent(element, CandyXmlTag.CHOCOLATE_TYPE.getName());
         return ChocolateType.getChocolateType(typeName);
     }
 

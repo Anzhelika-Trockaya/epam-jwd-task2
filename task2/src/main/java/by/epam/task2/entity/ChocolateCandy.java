@@ -4,28 +4,15 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.time.YearMonth;
-import java.util.List;
 
 @XmlType(name = "chocolate-candy")
 @XmlRootElement
-public class ChocolateCandy extends Candy {
+public class ChocolateCandy extends AbstractCandy {
     private static final long serialVersionUID = 7617929853743504379L;
     private ChocolateType chocolateType;
     private String filling;
 
     public ChocolateCandy() {
-    }
-
-    public ChocolateCandy(String vendorCode, String name, YearMonth expirationDate, int energy, Value value, List<Ingredient> ingredients, Production production, ChocolateType chocolateType, String filling) {
-        super(vendorCode, name, expirationDate, energy, value, ingredients, production);
-        this.chocolateType = chocolateType;
-        this.filling = filling;
-    }
-
-    public ChocolateCandy(String vendorCode, String name, YearMonth expirationDate, int energy, Value value, List<Ingredient> ingredients, Production production, ChocolateType chocolateType) {
-        super(vendorCode, name, expirationDate, energy, value, ingredients, production);
-        this.chocolateType = chocolateType;
     }
 
     @XmlElement(name = "chocolate-type")
@@ -70,10 +57,12 @@ public class ChocolateCandy extends Candy {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() +
-                "{" + super.toString() +
-                ", chocolateType=" + chocolateType +
-                ", filling='" + filling + '\'' +
-                '}';
+        String className = this.getClass().getSimpleName();
+        StringBuilder builder = new StringBuilder(className);
+        builder.append('{').append(super.toString()).
+                append(", chocolateType=").append(chocolateType).
+                append(", filling='").append(filling).append('\'').
+                append('}');
+        return builder.toString();
     }
 }

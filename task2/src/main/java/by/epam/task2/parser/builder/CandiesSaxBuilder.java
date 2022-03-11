@@ -1,7 +1,7 @@
-package by.epam.task2.builder.impl;
+package by.epam.task2.parser.builder;
 
-import by.epam.task2.builder.CandiesBuilder;
-import by.epam.task2.builder.handler.CandyHandler;
+import by.epam.task2.parser.CandyErrorHandler;
+import by.epam.task2.parser.CandyHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -10,7 +10,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 
-public class CandiesSaxBuilder extends CandiesBuilder {
+public class CandiesSaxBuilder extends AbstractCandiesBuilder {
     private final CandyHandler candyHandler = new CandyHandler();
     private XMLReader reader;
 
@@ -22,7 +22,7 @@ public class CandiesSaxBuilder extends CandiesBuilder {
         }catch(ParserConfigurationException| SAXException exception){
             //fixme log? exception?
         }
-        //fixme reader.setErrorHandler(new CandyErrorHandler());
+        reader.setErrorHandler(new CandyErrorHandler());
         reader.setContentHandler(candyHandler);
     }
 

@@ -1,4 +1,6 @@
-package by.epam.task2.builder.handler;
+package by.epam.task2.parser;
+
+import by.epam.task2.exception.ParseXMLException;
 
 public enum CandyXmlTag {
     CANDIES("candies"),
@@ -8,14 +10,18 @@ public enum CandyXmlTag {
     INGREDIENT("ingredient"),
     VALUE("value"),
     CANDY_NAME("name"),
+
     CHOCOLATE_TYPE("chocolate-type"),
     FLAVOR("flavor"),
     LOLLIPOP("lollipop"),
+
     INGREDIENT_NAME("ingredient-name"),
     WEIGHT("weight"),
+
     CARBOHYDRATES("carbohydrates"),
     FATS("fats"),
     PROTEINS("proteins"),
+
     PRODUCTION("production"),
     EXPIRATION_DATE("expiration-date"),
     ENERGY("energy");
@@ -25,13 +31,13 @@ public enum CandyXmlTag {
         this.name = name;
     }
 
-    public static CandyXmlTag getCandyXmlTag(String name){
+    public static CandyXmlTag getCandyXmlTag(String name) throws ParseXMLException {
         for(CandyXmlTag tag : CandyXmlTag.values()){
             if(name.equals(tag.getName())){
                 return tag;
             }
         }
-        return null;//fixme throw exc
+        throw new ParseXMLException("Unknown tag <"+name+">");
     }
 
     public String getName() {

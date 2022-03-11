@@ -6,9 +6,9 @@ import java.util.Set;
 
 @XmlRootElement
 public class Candies {
-    Set<Candy> candies;
+    Set<AbstractCandy> candies;
 
-    public Set<Candy> getCandies() {
+    public Set<AbstractCandy> getCandies() {
         return candies;
     }
 
@@ -17,11 +17,11 @@ public class Candies {
             @XmlElement(type = CaramelCandy.class, name = "caramel-candy"),
             @XmlElement(type = ChocolateCandy.class, name = "chocolate-candy")
     })
-    public void setCandies(Set<Candy> candies) {
+    public void setCandies(Set<AbstractCandy> candies) {
         this.candies = candies;
     }
 
-    public void add(Candy product) {
+    public void add(AbstractCandy product) {
         if (this.candies == null) {
             this.candies = new HashSet<>();
         }

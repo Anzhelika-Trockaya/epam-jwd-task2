@@ -1,5 +1,7 @@
 package by.epam.task2.entity;
 
+import by.epam.task2.exception.ParseXMLException;
+
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
@@ -23,12 +25,12 @@ public enum ChocolateType {
         return name;
     }
 
-    public static ChocolateType getChocolateType(String name) {
+    public static ChocolateType getChocolateType(String name) throws ParseXMLException {
         for (ChocolateType chocolateType : ChocolateType.values()) {
             if(chocolateType.getName().equals(name)){
                 return chocolateType;
             }
         }
-        return null;//fixme: throw new XMLParserException();
+        throw new ParseXMLException("Unknown ChocolateType name '"+name+"'");
     }
 }

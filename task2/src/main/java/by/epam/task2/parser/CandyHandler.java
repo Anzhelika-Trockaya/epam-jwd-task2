@@ -1,6 +1,9 @@
-package by.epam.task2.builder.handler;
+package by.epam.task2.parser;
 
 import by.epam.task2.entity.*;
+import by.epam.task2.exception.ParseXMLException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -8,13 +11,14 @@ import java.time.YearMonth;
 import java.util.*;
 
 public class CandyHandler extends DefaultHandler {
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final String ELEMENT_CHOCOLATE_CANDY = CandyXmlTag.CHOCOLATE_CANDY.getName();
     private static final String ELEMENT_CARAMEL_CANDY = CandyXmlTag.CARAMEL_CANDY.getName();
     private static final String ELEMENT_INGREDIENTS = CandyXmlTag.INGREDIENTS.getName();
     private static final String ELEMENT_INGREDIENT = CandyXmlTag.INGREDIENT.getName();
-    private final Set<Candy> candies;
+    private final Set<AbstractCandy> candies;
     private List<Ingredient> currentIngredients;
-    private Candy currentCandy;
+    private AbstractCandy currentCandy;
     private Ingredient currentIngredient;
     private ChocolateCandy currentChocolateCandy;
     private CaramelCandy currentCaramelCandy;
@@ -26,10 +30,11 @@ public class CandyHandler extends DefaultHandler {
         withText = EnumSet.range(CandyXmlTag.CANDY_NAME, CandyXmlTag.ENERGY);
     }
 
-    public Set<Candy> getCandies() {
+    public Set<AbstractCandy> getCandies() {
         return candies;
     }
 
+    @Override
     public void startElement(String uri, String localName, String qName, Attributes attrs) {
         if (ELEMENT_CHOCOLATE_CANDY.equals(qName)) {
             currentChocolateCandy = new ChocolateCandy();
@@ -50,13 +55,18 @@ public class CandyHandler extends DefaultHandler {
         } else if (ELEMENT_INGREDIENT.equals(qName)) {
             currentIngredient = new Ingredient();
         } else {
-            CandyXmlTag temp = CandyXmlTag.getCandyXmlTag(qName);
-            if (withText.contains(temp)) {
-                currentXmlTag = temp;
+            try {
+                CandyXmlTag temp = CandyXmlTag.getCandyXmlTag(qName);
+                if (withText.contains(temp)) {
+                    currentXmlTag = temp;
+                }
+            } catch(ParseXMLException exception){
+                //fixme log warn
             }
         }
     }
 
+    @Override
     public void endElement(String uri, String localName, String qName) {
         if (ELEMENT_CHOCOLATE_CANDY.equals(qName)) {
             candies.add(currentChocolateCandy);
@@ -69,6 +79,7 @@ public class CandyHandler extends DefaultHandler {
         }
     }
 
+    @Override
     public void characters(char[] ch, int start, int length) {
         String data = new String(ch, start, length).strip();
         if (currentXmlTag != null) {
@@ -76,18 +87,19 @@ public class CandyHandler extends DefaultHandler {
                 case CANDY_NAME -> currentCandy.setName(data);
                 case CHOCOLATE_TYPE -> {
                     currentChocolateCandy = (ChocolateCandy) currentCandy;
-                    currentChocolateCandy.setChocolateType(ChocolateType.getChocolateType(data));
-                    currentCandy = currentChocolateCandy;//todo лишняя строка?
+                    try {
+                        currentChocolateCandy.setChocolateType(ChocolateType.getChocolateType(data));
+                    } catch (ParseXMLException exception) {
+                        LOGGER.warn(exception);//fixme?? do logger write info?
+                    }
                 }
                 case FLAVOR -> {
                     currentCaramelCandy = (CaramelCandy) currentCandy;
                     currentCaramelCandy.setFlavor(data);
-                    currentCandy = currentCaramelCandy;//todo лишняя строка?
                 }
                 case LOLLIPOP -> {
                     currentCaramelCandy = (CaramelCandy) currentCandy;
                     currentCaramelCandy.setLollipop(Boolean.parseBoolean(data));
-                    currentCandy = currentCaramelCandy;//todo лишняя строка?
                 }
                 case INGREDIENT_NAME -> currentIngredient.setName(data);
                 case WEIGHT -> currentIngredient.setWeight(Integer.parseInt(data));
@@ -107,10 +119,16 @@ public class CandyHandler extends DefaultHandler {
                     currentCandy.setValue(value);
                 }
                 case ENERGY -> currentCandy.setEnergy(Integer.parseInt(data));
-                case PRODUCTION -> currentCandy.setProduction(Production.getProduction(data));
+                case PRODUCTION -> {
+                    try {
+                        currentCandy.setProduction(Production.getProduction(data));
+                    } catch (ParseXMLException exception) {
+                        LOGGER.warn(exception);//fixme?? do logger write info?
+                    }
+                }
                 case EXPIRATION_DATE -> currentCandy.setExpirationDate(YearMonth.parse(data));
                 default -> throw new EnumConstantNotPresentException(
-                        currentXmlTag.getDeclaringClass(), currentXmlTag.name());//fixme wrap exception
+                        currentXmlTag.getDeclaringClass(), currentXmlTag.name());
             }
         }
         currentXmlTag = null;

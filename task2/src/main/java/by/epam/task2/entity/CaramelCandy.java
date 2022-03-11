@@ -3,23 +3,15 @@ package by.epam.task2.entity;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.time.YearMonth;
-import java.util.List;
 
 @XmlType(name = "caramel-candy")
 @XmlRootElement
-public class CaramelCandy extends Candy {
+public class CaramelCandy extends AbstractCandy {
     private static final long serialVersionUID = 3796736371273322548L;
     private boolean isLollipop;
     private String flavor;
 
     public CaramelCandy() {
-    }
-
-    public CaramelCandy(String vendorCode, String name, YearMonth expirationDate, int energy, Value value, List<Ingredient> ingredients, Production production, boolean isLollipop, String flavor) {
-        super(vendorCode, name, expirationDate, energy, value, ingredients, production);
-        this.isLollipop = isLollipop;
-        this.flavor = flavor;
     }
 
     @XmlElement(name = "lollipop")
@@ -63,10 +55,12 @@ public class CaramelCandy extends Candy {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() +
-                "{" + super.toString() +
-                ", isLollipop=" + isLollipop +
-                ", flavor='" + flavor + '\'' +
-                '}';
+        String className = this.getClass().getSimpleName();
+        StringBuilder builder = new StringBuilder(className);
+        builder.append('{').append(super.toString()).
+                append(", isLollipop=").append(isLollipop).
+                append(", flavor='").append(flavor).append('\'').
+                append('}');
+        return builder.toString();
     }
 }
