@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.time.YearMonth;
+import java.util.List;
 
 @XmlType(name = "chocolate-candy")
 @XmlRootElement
@@ -64,5 +66,54 @@ public class ChocolateCandy extends AbstractCandy {
                 append(", filling='").append(filling).append('\'').
                 append('}');
         return builder.toString();
+    }
+
+    public static class Builder {
+        private final ChocolateCandy candy;
+
+        public Builder(String vendorCode, String name) {
+            candy = new ChocolateCandy();
+            candy.setVendorCode(vendorCode);
+            candy.setName(name);
+        }
+
+        public Builder buildExpirationDate(YearMonth expirationDate) {
+            candy.setExpirationDate(expirationDate);
+            return this;
+        }
+
+        public Builder buildEnergy(int energy) {
+            candy.setEnergy(energy);
+            return this;
+        }
+
+        public Builder buildValue(Value value) {
+            candy.setValue(value);
+            return this;
+        }
+
+        public Builder buildIngredients(List<Ingredient> ingredients) {
+            candy.setIngredients(ingredients);
+            return this;
+        }
+
+        public Builder buildProduction(Production production) {
+            candy.setProduction(production);
+            return this;
+        }
+
+        public Builder buildFilling(String filling) {
+            candy.setFilling(filling);
+            return this;
+        }
+
+        public Builder buildChocolateType(ChocolateType chocolateType) {
+            candy.setChocolateType(chocolateType);
+            return this;
+        }
+
+        public ChocolateCandy getCandy() {
+            return candy;
+        }
     }
 }

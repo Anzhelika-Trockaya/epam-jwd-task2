@@ -32,7 +32,7 @@ public class CandyBuilderFactory {
                 LOGGER.info("Created new CandiesStaxBuilder");
                 return new CandiesStaxBuilder();
             }
-            case JAXB->{
+            case JAXB -> {
                 LOGGER.info("Created new CandiesJaxbBuilder");
                 return new CandiesJaxbBuilder();
             }

@@ -1,8 +1,8 @@
 package by.epam.task2.parser.builder;
 
 import by.epam.task2.entity.AbstractCandy;
-import by.epam.task2.entity.ChocolateCandy;
 import by.epam.task2.exception.ParseXMLException;
+import by.epam.task2.parser.builder.dataProvider.StaticDataProvider;
 import by.epam.task2.util.ResourcePathUtil;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -18,7 +18,7 @@ public class CandiesDomBuilderTest {
 
     @Test
     @BeforeClass
-    public void buildSetCandiesTest() throws ParseXMLException {
+    public void testBuildSetCandies() throws ParseXMLException {
         String fileName;
         try {
             fileName = ResourcePathUtil.getResourcePath(SIMPLE_FILE_NAME);
@@ -32,35 +32,19 @@ public class CandiesDomBuilderTest {
     }
 
     public AbstractCandy getCandyWithVendorCode(String vendorCode) throws ParseXMLException {
-        for(AbstractCandy candy:candies){
-            if(candy.getVendorCode().equals(vendorCode)){
+        for (AbstractCandy candy : candies) {
+            if (candy.getVendorCode().equals(vendorCode)) {
                 return candy;
             }
         }
-        throw new ParseXMLException("Candy with vendorCode="+vendorCode+" does not exist.");
+        throw new ParseXMLException("Candy with vendorCode=" + vendorCode + " does not exist.");
     }
 
-    @Test
-    public void testAttributesOrderFillingVendorCode() throws ParseXMLException {
-        ChocolateCandy actualCandy = (ChocolateCandy) getCandyWithVendorCode("A-848586");
-        String actualFilling = actualCandy.getFilling();
-        String expectedFilling = "Hazelnut";
-        assertEquals(actualFilling,expectedFilling);
-    }
-
-    @Test
-    public void testAttributesOrderVendorCodeFilling() throws ParseXMLException {
-        ChocolateCandy actualCandy = (ChocolateCandy) getCandyWithVendorCode("A-777814");
-        String actualFilling = actualCandy.getFilling();
-        String expectedFilling = "Peanut";
-        assertEquals(actualFilling,expectedFilling);
-    }
-
-    @Test
-    public void testAttributesVendorCodeOnly() throws ParseXMLException {
-        ChocolateCandy actualCandy = (ChocolateCandy) getCandyWithVendorCode("A-1111111");
-        String actualFilling = actualCandy.getFilling();
-        assertNull(actualFilling);
+    @Test(dataProvider = "candies-data", dataProviderClass = StaticDataProvider.class)
+    public void testParsedData(AbstractCandy expectedCandy) throws ParseXMLException {
+        String vendorCode = expectedCandy.getVendorCode();
+        AbstractCandy actualCandy = getCandyWithVendorCode(vendorCode);
+        assertEquals(expectedCandy, actualCandy);
     }
 
 }

@@ -3,6 +3,8 @@ package by.epam.task2.entity;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.time.YearMonth;
+import java.util.List;
 
 @XmlType(name = "caramel-candy")
 @XmlRootElement
@@ -62,5 +64,54 @@ public class CaramelCandy extends AbstractCandy {
                 append(", flavor='").append(flavor).append('\'').
                 append('}');
         return builder.toString();
+    }
+
+    public static class Builder {
+        private final CaramelCandy candy;
+
+        public Builder(String vendorCode, String name) {
+            candy = new CaramelCandy();
+            candy.setVendorCode(vendorCode);
+            candy.setName(name);
+        }
+
+        public Builder buildExpirationDate(YearMonth expirationDate) {
+            candy.setExpirationDate(expirationDate);
+            return this;
+        }
+
+        public Builder buildEnergy(int energy) {
+            candy.setEnergy(energy);
+            return this;
+        }
+
+        public Builder buildValue(Value value) {
+            candy.setValue(value);
+            return this;
+        }
+
+        public Builder buildIngredients(List<Ingredient> ingredients) {
+            candy.setIngredients(ingredients);
+            return this;
+        }
+
+        public Builder buildProduction(Production production) {
+            candy.setProduction(production);
+            return this;
+        }
+
+        public Builder buildLollipop(boolean isLollipop) {
+            candy.setLollipop(isLollipop);
+            return this;
+        }
+
+        public Builder buildFlavor(String flavor) {
+            candy.setFlavor(flavor);
+            return this;
+        }
+
+        public CaramelCandy getCandy() {
+            return candy;
+        }
     }
 }

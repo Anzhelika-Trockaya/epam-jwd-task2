@@ -10,18 +10,14 @@ public enum CandyXmlTag {
     INGREDIENT("ingredient"),
     VALUE("value"),
     CANDY_NAME("name"),
-
     CHOCOLATE_TYPE("chocolate-type"),
     FLAVOR("flavor"),
     LOLLIPOP("lollipop"),
-
     INGREDIENT_NAME("ingredient-name"),
     WEIGHT("weight"),
-
     CARBOHYDRATES("carbohydrates"),
     FATS("fats"),
     PROTEINS("proteins"),
-
     PRODUCTION("production"),
     EXPIRATION_DATE("expiration-date"),
     ENERGY("energy");
@@ -32,12 +28,12 @@ public enum CandyXmlTag {
     }
 
     public static CandyXmlTag getCandyXmlTag(String name) throws ParseXMLException {
-        for(CandyXmlTag tag : CandyXmlTag.values()){
-            if(name.equals(tag.getName())){
+        for (CandyXmlTag tag : CandyXmlTag.values()) {
+            if (name.equals(tag.getName())) {
                 return tag;
             }
         }
-        throw new ParseXMLException("Unknown tag <"+name+">");
+        throw new ParseXMLException("Unknown tag <" + name + ">");
     }
 
     public String getName() {
