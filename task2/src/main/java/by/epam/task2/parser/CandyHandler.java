@@ -16,6 +16,7 @@ public class CandyHandler extends DefaultHandler {
     private static final String ELEMENT_CARAMEL_CANDY = CandyXmlTag.CARAMEL_CANDY.getName();
     private static final String ELEMENT_INGREDIENTS = CandyXmlTag.INGREDIENTS.getName();
     private static final String ELEMENT_INGREDIENT = CandyXmlTag.INGREDIENT.getName();
+    private final EnumSet<CandyXmlTag> withText;
     private final Set<AbstractCandy> candies;
     private List<Ingredient> currentIngredients;
     private AbstractCandy currentCandy;
@@ -23,7 +24,6 @@ public class CandyHandler extends DefaultHandler {
     private ChocolateCandy currentChocolateCandy;
     private CaramelCandy currentCaramelCandy;
     private CandyXmlTag currentXmlTag;
-    private final EnumSet<CandyXmlTag> withText;
 
     public CandyHandler() {
         candies = new HashSet<>();
@@ -46,7 +46,7 @@ public class CandyHandler extends DefaultHandler {
                 int fillingIndex = attrs.getIndex(fillingAttributeName);
                 currentChocolateCandy.setFilling(attrs.getValue(fillingIndex));
             }
-            currentCandy = currentChocolateCandy;//fixme warning
+            currentCandy = currentChocolateCandy;
         } else if (ELEMENT_CARAMEL_CANDY.equals(qName)) {
             currentCandy = new CaramelCandy();
             currentCandy.setVendorCode(attrs.getValue(0));
@@ -60,8 +60,8 @@ public class CandyHandler extends DefaultHandler {
                 if (withText.contains(temp)) {
                     currentXmlTag = temp;
                 }
-            } catch(ParseXMLException exception){
-                //fixme log warn
+            } catch (ParseXMLException exception) {
+                LOGGER.warn("Unknown start element '" + qName + "'.", exception);
             }
         }
     }
@@ -90,7 +90,7 @@ public class CandyHandler extends DefaultHandler {
                     try {
                         currentChocolateCandy.setChocolateType(ChocolateType.getChocolateType(data));
                     } catch (ParseXMLException exception) {
-                        LOGGER.warn(exception);//fixme?? do logger write info?
+                        LOGGER.warn(exception);
                     }
                 }
                 case FLAVOR -> {
@@ -123,12 +123,15 @@ public class CandyHandler extends DefaultHandler {
                     try {
                         currentCandy.setProduction(Production.getProduction(data));
                     } catch (ParseXMLException exception) {
-                        LOGGER.warn(exception);//fixme?? do logger write info?
+                        LOGGER.warn(exception);
                     }
                 }
                 case EXPIRATION_DATE -> currentCandy.setExpirationDate(YearMonth.parse(data));
-                default -> throw new EnumConstantNotPresentException(
-                        currentXmlTag.getDeclaringClass(), currentXmlTag.name());
+                default -> {
+                    LOGGER.error("Unknown tag " + currentXmlTag.name());
+                    throw new EnumConstantNotPresentException(
+                            currentXmlTag.getDeclaringClass(), currentXmlTag.name());
+                }
             }
         }
         currentXmlTag = null;

@@ -4,6 +4,8 @@ import by.epam.task2.entity.*;
 import by.epam.task2.exception.ParseXMLException;
 import by.epam.task2.parser.CandyXmlAttribute;
 import by.epam.task2.parser.CandyXmlTag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -19,19 +21,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CandiesDomBuilder extends AbstractCandiesBuilder {
-    private DocumentBuilder docBuilder;//fixme final?
+    private static final Logger LOGGER = LogManager.getLogger();
+    private final DocumentBuilder docBuilder;
 
-    public CandiesDomBuilder() {
+    public CandiesDomBuilder() throws ParseXMLException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             docBuilder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            //fixme log
+            LOGGER.error("CandiesDomBuilder not created", e);
+            throw new ParseXMLException(e);
         }
     }
 
     @Override
-    public void buildSetCandies(String fileName) {
+    public void buildSetCandies(String fileName) throws ParseXMLException {
         Document doc;
         try {
             doc = docBuilder.parse(fileName);
@@ -48,8 +52,10 @@ public class CandiesDomBuilder extends AbstractCandiesBuilder {
                 AbstractCandy candy = buildChocolateCandy(candyElement);
                 candies.add(candy);
             }
+            LOGGER.info("Set of candies is build. " + candies);
         } catch (IOException | SAXException | ParseXMLException exception) {
-            //todo log
+            LOGGER.error("Exception when build Set of candies", exception);
+            throw new ParseXMLException(exception);
         }
     }
 
@@ -57,7 +63,7 @@ public class CandiesDomBuilder extends AbstractCandiesBuilder {
         ChocolateCandy candy = new ChocolateCandy();
         buildCandy(candy, candyElement);
         String fillingAttr = CandyXmlAttribute.FILLING.getName();
-        if(candyElement.hasAttribute(fillingAttr)){
+        if (candyElement.hasAttribute(fillingAttr)) {
             candy.setFilling(candyElement.getAttribute(fillingAttr));
         }
         candy.setChocolateType(getElementChocolateType(candyElement));
@@ -76,9 +82,9 @@ public class CandiesDomBuilder extends AbstractCandiesBuilder {
     private void buildCandy(AbstractCandy candy, Element candyElement) throws ParseXMLException {
         candy.setVendorCode(candyElement.getAttribute(CandyXmlAttribute.VENDOR_CODE.getName()));
         candy.setName(getElementTextContent(candyElement, CandyXmlTag.CANDY_NAME.getName()));
-        candy.setProduction(getElementProductionValue(candyElement));
+        candy.setProduction(getElementProduction(candyElement));
         candy.setExpirationDate(getElementYearMonthContent(candyElement, CandyXmlTag.EXPIRATION_DATE.getName()));
-        candy.setIngredients(getIngredientsList(candyElement));
+        candy.setIngredients(buildIngredientsList(candyElement));
         candy.setEnergy(getElementIntContent(candyElement, CandyXmlTag.ENERGY.getName()));
         candy.setValue(buildValue(candyElement));
     }
@@ -93,9 +99,9 @@ public class CandiesDomBuilder extends AbstractCandiesBuilder {
         return value;
     }
 
-    private List<Ingredient> getIngredientsList(Element element) {
+    private List<Ingredient> buildIngredientsList(Element element) {
         NodeList nodeList = element.getElementsByTagName(CandyXmlTag.INGREDIENTS.getName());
-        Element ingredientsNode = (Element)nodeList.item(0);
+        Element ingredientsNode = (Element) nodeList.item(0);
         NodeList ingredientNodeList = ingredientsNode.getElementsByTagName(CandyXmlTag.INGREDIENT.getName());
         List<Ingredient> ingredients = new ArrayList<>();
         for (int i = 0; i < ingredientNodeList.getLength(); i++) {
@@ -126,7 +132,7 @@ public class CandiesDomBuilder extends AbstractCandiesBuilder {
         return node.getTextContent();
     }
 
-    private Production getElementProductionValue(Element element) throws ParseXMLException {
+    private Production getElementProduction(Element element) throws ParseXMLException {
         String productionName = getElementTextContent(element, CandyXmlTag.PRODUCTION.getName());
         return Production.getProduction(productionName);
     }

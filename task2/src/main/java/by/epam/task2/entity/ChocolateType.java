@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(name="chocolate-type")
+@XmlType(name = "chocolate-type")
 @XmlEnum
 public enum ChocolateType {
     @XmlEnumValue("White")
@@ -15,7 +15,7 @@ public enum ChocolateType {
     MILK("Milk"),
     @XmlEnumValue("Dark")
     DARK("Dark");
-    private String name;
+    private final String name;
 
     ChocolateType(String name) {
         this.name = name;
@@ -27,10 +27,10 @@ public enum ChocolateType {
 
     public static ChocolateType getChocolateType(String name) throws ParseXMLException {
         for (ChocolateType chocolateType : ChocolateType.values()) {
-            if(chocolateType.getName().equals(name)){
+            if (chocolateType.getName().equals(name)) {
                 return chocolateType;
             }
         }
-        throw new ParseXMLException("Unknown ChocolateType name '"+name+"'");
+        throw new ParseXMLException("ChocolateType with name '" + name + "' doesn't exist");
     }
 }

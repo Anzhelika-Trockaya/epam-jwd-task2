@@ -3,7 +3,7 @@ package by.epam.task2.parser;
 public enum CandyXmlAttribute {
     VENDOR_CODE("vendor-code"),
     FILLING("filling");
-    private String name;
+    private final String name;
 
     CandyXmlAttribute(String name) {
         this.name = name;

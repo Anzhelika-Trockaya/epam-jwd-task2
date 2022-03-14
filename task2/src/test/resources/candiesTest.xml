@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <candies xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
-           xs:noNamespaceSchemaLocation="candies.xsd">
+         xs:noNamespaceSchemaLocation="candies.xsd">
     <chocolate-candy vendor-code="A-1111111">
         <name>Berezka</name>
         <production>Spartak</production>

@@ -50,7 +50,7 @@ public class ChocolateCandy extends AbstractCandy {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = result * prime + chocolateType.hashCode();
+        result = result * prime + (chocolateType == null ? 0 : chocolateType.hashCode());
         result = result * prime + (filling == null ? 0 : filling.hashCode());
         return result;
     }

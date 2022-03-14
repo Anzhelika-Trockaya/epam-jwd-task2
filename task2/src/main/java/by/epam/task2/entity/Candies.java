@@ -6,13 +6,16 @@ import java.util.Set;
 
 @XmlRootElement
 public class Candies {
-    Set<AbstractCandy> candies;
+    private Set<AbstractCandy> candies;
+
+    public Candies() {
+        this.candies = new HashSet<>();
+    }
 
     public Set<AbstractCandy> getCandies() {
         return candies;
     }
 
-    @XmlElementWrapper
     @XmlElements({
             @XmlElement(type = CaramelCandy.class, name = "caramel-candy"),
             @XmlElement(type = ChocolateCandy.class, name = "chocolate-candy")
@@ -21,11 +24,27 @@ public class Candies {
         this.candies = candies;
     }
 
-    public void add(AbstractCandy product) {
-        if (this.candies == null) {
-            this.candies = new HashSet<>();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-        this.candies.add(product);
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        Candies that = (Candies) o;
+        return this.candies != null ? this.candies.equals(that.candies) : that.candies == null;
+    }
 
+    @Override
+    public int hashCode() {
+        return candies != null ? candies.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder(this.getClass().getSimpleName());
+        stringBuilder.append("{candies=").append(candies).append('}');
+        return stringBuilder.toString();
     }
 }

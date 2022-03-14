@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<candies>
+    <chocolate-candy vendor-code="A-848586" filling="Hazelnut">
+        <name>Teddy bear in the meadow</name>
+        <production>Kommunarka</production>
+        <expiration-date>2023-05</expiration-date>
+        <ingredients>
+            <ingredient>
+                <ingredient-name>Cacao</ingredient-name>
+                <weight>25</weight>
+            </ingredient>
+            <ingredient>
+                <ingredient-name>Water</ingredient-name>
+                <weight>10</weight>
+            </ingredient>
+        </ingredients>
+        <energy>760</energy>
+        <value>
+            <carbohydrates>550</carbohydrates>
+            <fats>24</fats>
+            <proteins>325</proteins>
+        </value>
+        <chocolate-type>Milk</chocolate-type>
+    </chocolate-candy>
+</candies>

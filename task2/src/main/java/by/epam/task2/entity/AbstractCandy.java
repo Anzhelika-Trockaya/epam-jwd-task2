@@ -1,6 +1,6 @@
 package by.epam.task2.entity;
 
-import by.epam.task2.jaxb.YearMonthAdapter;
+import by.epam.task2.parser.YearMonthAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -9,36 +9,22 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlType(propOrder = {"name", "production", "expirationDate", "ingredients", "energy", "value"}, name = "candy")
+@XmlType(name = "candy")
 public abstract class AbstractCandy implements Serializable {
     private static final long serialVersionUID = -3277035596610997101L;
     private String vendorCode;
     private String name;
     private YearMonth expirationDate;
     private int energy;
-    private Value value;
+    private final Value value;
     private List<Ingredient> ingredients;
     private Production production;
 
-    {
+    public AbstractCandy() {
         ingredients = new ArrayList<>();
         value = new Value();
     }
 
-    public AbstractCandy() {
-    }
-
-    public AbstractCandy(String vendorCode, String name, YearMonth expirationDate, int energy, Value value, List<Ingredient> ingredients, Production production) {
-        this.vendorCode = vendorCode;
-        this.name = name;
-        this.expirationDate = expirationDate;
-        this.energy = energy;
-        this.value = value;
-        this.ingredients = ingredients;
-        this.production = production;
-    }
-
-    //todo @XmlID
     @XmlAttribute(name = "vendor-code")
     public String getVendorCode() {
         return vendorCode;
@@ -137,7 +123,7 @@ public abstract class AbstractCandy implements Serializable {
         result = prime * result + energy;
         result = prime * result + value.hashCode();
         result = prime * result + (ingredients == null ? 0 : ingredients.hashCode());
-        result = prime * result + production.hashCode();
+        result = prime * result + (production == null ? 0 : production.hashCode());
         return result;
     }
 

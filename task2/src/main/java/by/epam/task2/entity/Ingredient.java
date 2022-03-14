@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Ingredient implements Serializable {
     private static final long serialVersionUID = -9035250561575720291L;
     private String name;
-    private int weight;//mg
+    private int weight;
 
     public Ingredient() {
     }
@@ -59,10 +59,11 @@ public class Ingredient implements Serializable {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName()+
-                "{" +
-                "name='" + name + '\'' +
-                ", weight=" + weight +
-                '}';
+        String className = this.getClass().getSimpleName();
+        StringBuilder builder = new StringBuilder(className);
+        builder.append("{name='").append(name).
+                append("', weight=").append(weight).
+                append('}');
+        return builder.toString();
     }
 }

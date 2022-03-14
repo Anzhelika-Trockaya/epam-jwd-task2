@@ -4,6 +4,8 @@ import by.epam.task2.entity.*;
 import by.epam.task2.exception.ParseXMLException;
 import by.epam.task2.parser.CandyXmlAttribute;
 import by.epam.task2.parser.CandyXmlTag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CandiesStaxBuilder extends AbstractCandiesBuilder {
+    private static final Logger LOGGER = LogManager.getLogger();
     private final XMLInputFactory inputFactory;
 
     public CandiesStaxBuilder() {
@@ -24,7 +27,7 @@ public class CandiesStaxBuilder extends AbstractCandiesBuilder {
     }
 
     @Override
-    public void buildSetCandies(String fileName) {
+    public void buildSetCandies(String fileName) throws ParseXMLException {
         XMLStreamReader reader;
         String name;
         try (FileInputStream inputStream = new FileInputStream(new File(fileName))) {
@@ -44,8 +47,10 @@ public class CandiesStaxBuilder extends AbstractCandiesBuilder {
                 }
             }
         } catch (XMLStreamException | IOException | ParseXMLException exception) {
-            //fixme log and wrap
+            LOGGER.error("Exception when build Set of candies", exception);
+            throw new ParseXMLException(exception);
         }
+        LOGGER.info("Set of candies is build. " + candies);
     }
 
     private AbstractCandy buildCandy(AbstractCandy candy, XMLStreamReader reader) throws XMLStreamException, ParseXMLException {

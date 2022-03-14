@@ -27,7 +27,7 @@ public enum Production {
     CHUPA_CHUPS("Chupa Chups"),
     @XmlEnumValue("Snickers")
     SNICKERS("Snickers");
-    private String name;
+    private final String name;
 
     Production(String name) {
         this.name = name;
@@ -39,10 +39,10 @@ public enum Production {
 
     public static Production getProduction(String name) throws ParseXMLException {
         for (Production production : Production.values()) {
-            if(name.equals(production.getName())){
+            if (name.equals(production.getName())) {
                 return production;
             }
         }
-        throw new ParseXMLException("Unknown production name '"+name+"'");
+        throw new ParseXMLException("Production with name '" + name + "' doesn't exist");
     }
 }

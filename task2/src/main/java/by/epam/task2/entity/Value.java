@@ -6,9 +6,9 @@ import java.io.Serializable;
 @XmlType(name = "value")
 public class Value implements Serializable {
     private static final long serialVersionUID = -5759372411514854808L;
-    private int proteins;//mg
-    private int fats;//mg
-    private int carbohydrates;//mg
+    private int proteins;
+    private int fats;
+    private int carbohydrates;
 
     public Value() {
     }
@@ -69,11 +69,12 @@ public class Value implements Serializable {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() +
-                "{" +
-                "proteins=" + proteins +
-                ", fats=" + fats +
-                ", carbohydrates=" + carbohydrates +
-                '}';
+        String className = this.getClass().getSimpleName();
+        StringBuilder builder = new StringBuilder(className);
+        builder.append("{proteins=").append(proteins).
+                append(", fats=").append(fats).
+                append(", carbohydrates=").append(carbohydrates).
+                append('}');
+        return builder.toString();
     }
 }
