@@ -9,7 +9,7 @@ import java.time.YearMonth;
 import java.util.List;
 
 public class CaramelCandyBuilder {
-    private CaramelCandy candy;
+    private final CaramelCandy candy;
 
     public CaramelCandyBuilder(String vendorCode, String name) {
         candy = new CaramelCandy();

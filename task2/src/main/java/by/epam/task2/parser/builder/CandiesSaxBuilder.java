@@ -1,7 +1,6 @@
 package by.epam.task2.parser.builder;
 
 import by.epam.task2.exception.ParseXMLException;
-import by.epam.task2.parser.CandyErrorHandler;
 import by.epam.task2.parser.CandyHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

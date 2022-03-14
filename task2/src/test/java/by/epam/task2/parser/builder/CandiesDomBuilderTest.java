@@ -1,6 +1,5 @@
 package by.epam.task2.parser.builder;
 
-import by.epam.task2.builder.ChocolateCandyBuilder;
 import by.epam.task2.entity.AbstractCandy;
 import by.epam.task2.entity.ChocolateCandy;
 import by.epam.task2.exception.ParseXMLException;
@@ -56,4 +55,12 @@ public class CandiesDomBuilderTest {
         String expectedFilling = "Peanut";
         assertEquals(actualFilling,expectedFilling);
     }
+
+    @Test
+    public void testAttributesVendorCodeOnly() throws ParseXMLException {
+        ChocolateCandy actualCandy = (ChocolateCandy) getCandyWithVendorCode("A-1111111");
+        String actualFilling = actualCandy.getFilling();
+        assertNull(actualFilling);
+    }
+
 }

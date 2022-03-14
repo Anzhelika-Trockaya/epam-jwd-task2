@@ -10,7 +10,7 @@ public class CandyErrorHandler implements ErrorHandler {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
-    public void warning(SAXParseException exception) throws SAXException {
+    public void warning(SAXParseException exception) {
         LOGGER.warn(getLineColumnNumber(exception) + "-" + exception.getMessage());
     }
 

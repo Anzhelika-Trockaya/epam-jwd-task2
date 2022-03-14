@@ -6,7 +6,7 @@ import java.time.YearMonth;
 import java.util.List;
 
 public class ChocolateCandyBuilder {
-    private ChocolateCandy candy;
+    private final ChocolateCandy candy;
 
     public ChocolateCandyBuilder(String vendorCode, String name) {
         candy = new ChocolateCandy();

@@ -1,8 +1,6 @@
 package by.epam.task2.parser;
 
 import by.epam.task2.exception.ParseXMLException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public enum CandyXmlTag {
     CANDIES("candies"),
