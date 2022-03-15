@@ -4,6 +4,8 @@ import by.epam.task2.entity.*;
 import by.epam.task2.exception.ParseXMLException;
 import by.epam.task2.parser.CandyXmlAttribute;
 import by.epam.task2.parser.CandyXmlTag;
+import by.epam.task2.util.ResourcePathUtil;
+import by.epam.task2.validator.XmlFileValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -36,26 +38,33 @@ public class CandiesDomBuilder extends AbstractCandiesBuilder {
 
     @Override
     public void buildSetCandies(String fileName) throws ParseXMLException {
-        Document doc;
-        try {
-            doc = docBuilder.parse(fileName);
-            Element root = doc.getDocumentElement();
-            NodeList caramelCandiesList = root.getElementsByTagName(CandyXmlTag.CARAMEL_CANDY.getName());
-            NodeList chocolateCandiesList = root.getElementsByTagName(CandyXmlTag.CHOCOLATE_CANDY.getName());
-            for (int i = 0; i < caramelCandiesList.getLength(); i++) {
-                Element candyElement = (Element) caramelCandiesList.item(i);
-                AbstractCandy candy = buildCaramelCandy(candyElement);
-                candies.add(candy);
+        String schemaFileName = ResourcePathUtil.getResourcePath(AbstractCandiesBuilder.SCHEMA_RESOURCE_NAME);
+        XmlFileValidator validator = XmlFileValidator.getInstance();
+        if (validator.isCorrect(fileName, schemaFileName)) {
+            Document doc;
+            try {
+                doc = docBuilder.parse(fileName);
+                Element root = doc.getDocumentElement();
+                NodeList caramelCandiesList = root.getElementsByTagName(CandyXmlTag.CARAMEL_CANDY.getName());
+                NodeList chocolateCandiesList = root.getElementsByTagName(CandyXmlTag.CHOCOLATE_CANDY.getName());
+                for (int i = 0; i < caramelCandiesList.getLength(); i++) {
+                    Element candyElement = (Element) caramelCandiesList.item(i);
+                    AbstractCandy candy = buildCaramelCandy(candyElement);
+                    candies.add(candy);
+                }
+                for (int i = 0; i < chocolateCandiesList.getLength(); i++) {
+                    Element candyElement = (Element) chocolateCandiesList.item(i);
+                    AbstractCandy candy = buildChocolateCandy(candyElement);
+                    candies.add(candy);
+                }
+                LOGGER.info("Set of candies is build. " + candies);
+            } catch (IOException | SAXException | ParseXMLException exception) {
+                LOGGER.error("Exception when build Set of candies", exception);
+                throw new ParseXMLException(exception);
             }
-            for (int i = 0; i < chocolateCandiesList.getLength(); i++) {
-                Element candyElement = (Element) chocolateCandiesList.item(i);
-                AbstractCandy candy = buildChocolateCandy(candyElement);
-                candies.add(candy);
-            }
-            LOGGER.info("Set of candies is build. " + candies);
-        } catch (IOException | SAXException | ParseXMLException exception) {
-            LOGGER.error("Exception when build Set of candies", exception);
-            throw new ParseXMLException(exception);
+        } else {
+            LOGGER.info("File '" + fileName + "' does not match schema '" + schemaFileName + "'");
+            throw new ParseXMLException("File '" + fileName + "' does not match schema '" + schemaFileName + "'");
         }
     }
 

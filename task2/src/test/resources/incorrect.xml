@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<candies>
+    <chocolate-candy vendor-code="A-777814" filling="Peanut">
+        <production>Peter Ronnen</production>
+        <expiration-date>2023-02</expiration-date>
+        <ingredients>
+            <ingredient>
+                <ingredient-name>Cacao</ingredient-name>
+                <weight>23</weight>
+            </ingredient>
+            <ingredient>
+                <ingredient-name>Water</ingredient-name>
+                <weight>5</weight>
+            </ingredient>
+            <ingredient>
+                <ingredient-name>Peanut</ingredient-name>
+                <weight>45</weight>
+            </ingredient>
+        </ingredients>
+        <energy>754</energy>
+        <value>
+            <carbohydrates>642</carbohydrates>
+            <fats>65</fats>
+            <proteins>12</proteins>
+        </value>
+        <chocolate-type>Dark</chocolate-type>
+    </chocolate-candy>
+    </candies>

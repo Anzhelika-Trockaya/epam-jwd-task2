@@ -7,13 +7,17 @@ import by.epam.task2.util.ResourcePathUtil;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
 import static org.testng.Assert.*;
 
 public class CandiesDomBuilderTest {
-    public static final String SIMPLE_FILE_NAME = "candiesTest.xml";
-
+    public static final String CORRECT_RESOURCE_NAME = "candiesTest.xml";
+    public static final String EMPTY_RESOURCE_NAME = "empty.xml";
+    public static final String INCORRECT_RESOURCE_NAME = "incorrect.xml";
+    CandiesDomBuilder domBuilder;
     Set<AbstractCandy> candies;
 
     @Test
@@ -21,12 +25,12 @@ public class CandiesDomBuilderTest {
     public void testBuildSetCandies() throws ParseXMLException {
         String fileName;
         try {
-            fileName = ResourcePathUtil.getResourcePath(SIMPLE_FILE_NAME);
+            fileName = ResourcePathUtil.getResourcePath(CORRECT_RESOURCE_NAME);
         } catch (ParseXMLException exception) {
             fail("Test failed. " + exception.getMessage());
             return;
         }
-        CandiesDomBuilder domBuilder = new CandiesDomBuilder();
+        domBuilder = new CandiesDomBuilder();
         domBuilder.buildSetCandies(fileName);
         candies = domBuilder.getCandies();
     }
@@ -47,4 +51,44 @@ public class CandiesDomBuilderTest {
         assertEquals(expectedCandy, actualCandy);
     }
 
+    @Test(expectedExceptions = ParseXMLException.class, expectedExceptionsMessageRegExp = "File '.*' does not match schema '.*'")
+    public void testEmptyFile() throws ParseXMLException {
+        String fileName;
+        try {
+            fileName = ResourcePathUtil.getResourcePath(EMPTY_RESOURCE_NAME);
+        } catch (ParseXMLException exception) {
+            fail("Test failed. " + exception.getMessage());
+            return;
+        }
+        domBuilder.buildSetCandies(fileName);
+    }
+
+    @Test(expectedExceptions = ParseXMLException.class, expectedExceptionsMessageRegExp = "File '.*' does not match schema '.*'")
+    public void testIncorrectFile() throws ParseXMLException {
+        String fileName;
+        try {
+            fileName = ResourcePathUtil.getResourcePath(INCORRECT_RESOURCE_NAME);
+        } catch (ParseXMLException exception) {
+            fail("Test failed. " + exception.getMessage());
+            return;
+        }
+        domBuilder.buildSetCandies(fileName);
+    }
+
+    @Test(expectedExceptions = ParseXMLException.class)
+    public void testNonExistentFile() throws ParseXMLException {
+        String fileName;
+        try {
+            File nonExistent = File.createTempFile("test", "txt");
+            fileName = nonExistent.getAbsolutePath();
+            if (!nonExistent.delete()) {
+                fail("Test failed. File not deleted.");
+                return;
+            }
+        } catch (IOException ioException) {
+            fail("Test failed. " + ioException.getMessage());
+            return;
+        }
+        domBuilder.buildSetCandies(fileName);
+    }
 }

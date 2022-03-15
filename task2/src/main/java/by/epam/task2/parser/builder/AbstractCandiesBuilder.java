@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractCandiesBuilder {
+    public static final String SCHEMA_RESOURCE_NAME = "candies.xsd";
+
     protected Set<AbstractCandy> candies = new HashSet<>();
 
     public Set<AbstractCandy> getCandies() {

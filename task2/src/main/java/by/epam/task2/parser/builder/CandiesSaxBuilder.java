@@ -2,6 +2,8 @@ package by.epam.task2.parser.builder;
 
 import by.epam.task2.exception.ParseXMLException;
 import by.epam.task2.parser.CandyHandler;
+import by.epam.task2.util.ResourcePathUtil;
+import by.epam.task2.validator.XmlFileValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
@@ -26,18 +28,24 @@ public class CandiesSaxBuilder extends AbstractCandiesBuilder {
             LOGGER.error("CandiesSaxBuilder not created", exception);
             throw new ParseXMLException(exception);
         }
-        //reader.setErrorHandler(new CandyErrorHandler());
         reader.setContentHandler(candyHandler);
     }
 
     public void buildSetCandies(String fileName) throws ParseXMLException {
-        try {
-            reader.parse(fileName);
-        } catch (IOException | SAXException exception) {
-            LOGGER.error("Exception when build Set of candies", exception);
-            throw new ParseXMLException(exception);
+        String schemaFileName = ResourcePathUtil.getResourcePath(AbstractCandiesBuilder.SCHEMA_RESOURCE_NAME);
+        XmlFileValidator validator = XmlFileValidator.getInstance();
+        if (validator.isCorrect(fileName, schemaFileName)) {
+            try {
+                reader.parse(fileName);
+            } catch (IOException | SAXException exception) {
+                LOGGER.error("Exception when build Set of candies", exception);
+                throw new ParseXMLException(exception);
+            }
+            candies = candyHandler.getCandies();
+            LOGGER.info("Set of Candies build. " + candies);
+        } else {
+            LOGGER.info("File '" + fileName + "' does not match schema '" + schemaFileName + "'");
+            throw new ParseXMLException("File '" + fileName + "' does not match schema '" + schemaFileName + "'");
         }
-        candies = candyHandler.getCandies();
-        LOGGER.info("Set of Candies build. " + candies);
     }
 }

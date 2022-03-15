@@ -4,6 +4,8 @@ import by.epam.task2.entity.*;
 import by.epam.task2.exception.ParseXMLException;
 import by.epam.task2.parser.CandyXmlAttribute;
 import by.epam.task2.parser.CandyXmlTag;
+import by.epam.task2.util.ResourcePathUtil;
+import by.epam.task2.validator.XmlFileValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,29 +30,36 @@ public class CandiesStaxBuilder extends AbstractCandiesBuilder {
 
     @Override
     public void buildSetCandies(String fileName) throws ParseXMLException {
-        XMLStreamReader reader;
-        String name;
-        try (FileInputStream inputStream = new FileInputStream(new File(fileName))) {
-            reader = inputFactory.createXMLStreamReader(inputStream);
-            while (reader.hasNext()) {
-                int type = reader.next();
-                if (type == XMLStreamConstants.START_ELEMENT) {
-                    name = reader.getLocalName();
-                    CandyXmlTag tag = CandyXmlTag.getCandyXmlTag(name);
-                    if (CandyXmlTag.CARAMEL_CANDY == tag) {
-                        AbstractCandy candy = buildCandy(new CaramelCandy(), reader);
-                        candies.add(candy);
-                    } else if (CandyXmlTag.CHOCOLATE_CANDY == tag) {
-                        AbstractCandy candy = buildCandy(new ChocolateCandy(), reader);
-                        candies.add(candy);
+        String schemaFileName = ResourcePathUtil.getResourcePath(AbstractCandiesBuilder.SCHEMA_RESOURCE_NAME);
+        XmlFileValidator validator = XmlFileValidator.getInstance();
+        if (validator.isCorrect(fileName, schemaFileName)) {
+            XMLStreamReader reader;
+            String name;
+            try (FileInputStream inputStream = new FileInputStream(new File(fileName))) {
+                reader = inputFactory.createXMLStreamReader(inputStream);
+                while (reader.hasNext()) {
+                    int type = reader.next();
+                    if (type == XMLStreamConstants.START_ELEMENT) {
+                        name = reader.getLocalName();
+                        CandyXmlTag tag = CandyXmlTag.getCandyXmlTag(name);
+                        if (CandyXmlTag.CARAMEL_CANDY == tag) {
+                            AbstractCandy candy = buildCandy(new CaramelCandy(), reader);
+                            candies.add(candy);
+                        } else if (CandyXmlTag.CHOCOLATE_CANDY == tag) {
+                            AbstractCandy candy = buildCandy(new ChocolateCandy(), reader);
+                            candies.add(candy);
+                        }
                     }
                 }
+            } catch (XMLStreamException | IOException | ParseXMLException exception) {
+                LOGGER.error("Exception when build Set of candies", exception);
+                throw new ParseXMLException(exception);
             }
-        } catch (XMLStreamException | IOException | ParseXMLException exception) {
-            LOGGER.error("Exception when build Set of candies", exception);
-            throw new ParseXMLException(exception);
+            LOGGER.info("Set of candies is build. " + candies);
+        } else {
+            LOGGER.info("File '" + fileName + "' does not match schema '" + schemaFileName + "'");
+            throw new ParseXMLException("File '" + fileName + "' does not match schema '" + schemaFileName + "'");
         }
-        LOGGER.info("Set of candies is build. " + candies);
     }
 
     private AbstractCandy buildCandy(AbstractCandy candy, XMLStreamReader reader) throws XMLStreamException, ParseXMLException {

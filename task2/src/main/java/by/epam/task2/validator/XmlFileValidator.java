@@ -40,10 +40,10 @@ public class XmlFileValidator {
             LOGGER.info("File '" + xmlFileName + "' matches schema '" + schemaFileName + "'");
             return true;
         } catch (SAXException saxException) {
-            LOGGER.info("File '" + xmlFileName + "' does not match schema '" + schemaFileName + "'");
+            LOGGER.info(saxException.getMessage());
             return false;
         } catch (IOException ioException) {
-            LOGGER.warn("Exception when validate file. File:'" + xmlFileName + "' Schema:'" + schemaFileName + "'");
+            LOGGER.error("Exception when validate file. File:'" + xmlFileName + "' Schema:'" + schemaFileName + "'");
             throw new ParseXMLException(ioException);
         }
     }

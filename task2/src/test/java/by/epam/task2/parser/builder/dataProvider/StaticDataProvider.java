@@ -10,7 +10,7 @@ import java.util.List;
 
 public class StaticDataProvider {
     @DataProvider(name = "candies-data")
-    public Object[][] createCandiesData() {
+    public static Object[][] createCandiesData() {
         Object[][] data = new Object[5][1];
         data[0] = new Object[]{buildFirstCandy()};
         data[1] = new Object[]{buildSecondCandy()};
@@ -20,7 +20,7 @@ public class StaticDataProvider {
         return data;
     }
 
-    private ChocolateCandy buildFirstCandy() {
+    private static ChocolateCandy buildFirstCandy() {
         ChocolateCandy.Builder builder = new ChocolateCandy.Builder("A-1111111", "Berezka");
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient water = new Ingredient("Water", 5);
@@ -36,7 +36,7 @@ public class StaticDataProvider {
                 buildChocolateType(ChocolateType.DARK).buildFilling(null).getCandy();
     }
 
-    private ChocolateCandy buildSecondCandy() {
+    private static ChocolateCandy buildSecondCandy() {
         ChocolateCandy.Builder builder = new ChocolateCandy.Builder("A-848586", "Teddy bear in the meadow");
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient water = new Ingredient("Water", 10);
@@ -52,7 +52,7 @@ public class StaticDataProvider {
                 buildChocolateType(ChocolateType.MILK).buildFilling("Hazelnut").getCandy();
     }
 
-    private ChocolateCandy buildThirdCandy() {
+    private static ChocolateCandy buildThirdCandy() {
         ChocolateCandy.Builder builder = new ChocolateCandy.Builder("A-777814", "Choconut");
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient water = new Ingredient("Water", 5);
@@ -70,7 +70,7 @@ public class StaticDataProvider {
                 buildChocolateType(ChocolateType.DARK).buildFilling("Peanut").getCandy();
     }
 
-    private CaramelCandy buildForthCandy() {
+    private static CaramelCandy buildForthCandy() {
         CaramelCandy.Builder builder = new CaramelCandy.Builder("A-123456", "Duchesse");
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient water = new Ingredient("Water", 25);
@@ -86,7 +86,7 @@ public class StaticDataProvider {
                 buildFlavor("Duchesse").buildLollipop(false).getCandy();
     }
 
-    private CaramelCandy buildFifthCandy() {
+    private static CaramelCandy buildFifthCandy() {
         CaramelCandy.Builder builder = new CaramelCandy.Builder("A-353535", "Konti");
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient water = new Ingredient("Water", 14);

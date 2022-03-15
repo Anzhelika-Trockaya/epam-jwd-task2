@@ -2,6 +2,8 @@ package by.epam.task2.parser.builder;
 
 import by.epam.task2.entity.Candies;
 import by.epam.task2.exception.ParseXMLException;
+import by.epam.task2.util.ResourcePathUtil;
+import by.epam.task2.validator.XmlFileValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,14 +30,21 @@ public class CandiesJaxbBuilder extends AbstractCandiesBuilder {
 
     @Override
     public void buildSetCandies(String fileName) throws ParseXMLException {
-        try {
-            InputStream fileInputStream = new FileInputStream(fileName);
-            Candies candiesObject = (Candies) unmarshaller.unmarshal(fileInputStream);
-            candies = candiesObject.getCandies();
-            LOGGER.info("Set of candies is build. " + candies);
-        } catch (FileNotFoundException | JAXBException exception) {
-            LOGGER.error("Exception when build Set of candies", exception);
-            throw new ParseXMLException(exception);
+        String schemaFileName = ResourcePathUtil.getResourcePath(AbstractCandiesBuilder.SCHEMA_RESOURCE_NAME);
+        XmlFileValidator validator = XmlFileValidator.getInstance();
+        if (validator.isCorrect(fileName, schemaFileName)) {
+            try {
+                InputStream fileInputStream = new FileInputStream(fileName);
+                Candies candiesObject = (Candies) unmarshaller.unmarshal(fileInputStream);
+                candies = candiesObject.getCandies();
+                LOGGER.info("Set of candies is build. " + candies);
+            } catch (FileNotFoundException | JAXBException exception) {
+                LOGGER.error("Exception when build Set of candies", exception);
+                throw new ParseXMLException(exception);
+            }
+        } else {
+            LOGGER.info("File '" + fileName + "' does not match schema '" + schemaFileName + "'");
+            throw new ParseXMLException("File '" + fileName + "' does not match schema '" + schemaFileName + "'");
         }
     }
 }
