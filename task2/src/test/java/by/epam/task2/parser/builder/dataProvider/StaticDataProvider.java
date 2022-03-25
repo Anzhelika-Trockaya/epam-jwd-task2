@@ -1,6 +1,5 @@
 package by.epam.task2.parser.builder.dataProvider;
 
-
 import by.epam.task2.entity.*;
 import org.testng.annotations.DataProvider;
 
