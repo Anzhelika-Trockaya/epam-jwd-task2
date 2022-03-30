@@ -73,37 +73,47 @@ public class CandiesStaxBuilder extends AbstractCandiesBuilder {
         while (reader.hasNext()) {
             int type = reader.next();
             switch (type) {
-                case XMLStreamConstants.START_ELEMENT -> {
+                case XMLStreamConstants.START_ELEMENT : {
                     name = reader.getLocalName();
                     CandyXmlTag tag = CandyXmlTag.getCandyXmlTag(name);
                     switch (tag) {
-                        case CANDY_NAME -> candy.setName(getXMLText(reader));
-                        case PRODUCTION -> candy.setProduction(Production.getProduction(getXMLText(reader)));
-                        case EXPIRATION_DATE -> candy.setExpirationDate(YearMonth.parse(getXMLText(reader)));
-                        case ENERGY -> candy.setEnergy(Integer.parseInt(getXMLText(reader)));
-                        case INGREDIENTS -> candy.setIngredients(getXMLIngredients(reader));
-                        case VALUE -> candy.setValue(getXMLValue(reader));
-                        case CHOCOLATE_TYPE -> {
+                        case CANDY_NAME: candy.setName(getXMLText(reader));
+                        break;
+                        case PRODUCTION: candy.setProduction(Production.getProduction(getXMLText(reader)));
+                            break;
+                        case EXPIRATION_DATE: candy.setExpirationDate(YearMonth.parse(getXMLText(reader)));
+                            break;
+                        case ENERGY: candy.setEnergy(Integer.parseInt(getXMLText(reader)));
+                            break;
+                        case INGREDIENTS : candy.setIngredients(getXMLIngredients(reader));
+                            break;
+                        case VALUE : candy.setValue(getXMLValue(reader));
+                            break;
+                        case CHOCOLATE_TYPE : {
                             ChocolateCandy chocolateCandy = (ChocolateCandy) candy;
                             chocolateCandy.setChocolateType(ChocolateType.getChocolateType(getXMLText(reader)));
                         }
-                        case FLAVOR -> {
+                        break;
+                        case FLAVOR : {
                             CaramelCandy caramelCandy = (CaramelCandy) candy;
                             caramelCandy.setFlavor(getXMLText(reader));
-                        }
-                        case LOLLIPOP -> {
+                        }break;
+                        case LOLLIPOP : {
                             CaramelCandy caramelCandy = (CaramelCandy) candy;
                             caramelCandy.setLollipop(Boolean.parseBoolean(getXMLText(reader)));
                         }
+                        break;
                     }
                 }
-                case XMLStreamConstants.END_ELEMENT -> {
+                break;
+                case XMLStreamConstants.END_ELEMENT : {
                     name = reader.getLocalName();
                     CandyXmlTag tag = CandyXmlTag.getCandyXmlTag(name);
                     if (CandyXmlTag.CARAMEL_CANDY == tag || CandyXmlTag.CHOCOLATE_CANDY == tag) {
                         return candy;
                     }
                 }
+                break;
             }
         }
         throw new ParseXMLException("End tag of " + candy.getClass().getSimpleName() + " is not found.");
@@ -116,21 +126,26 @@ public class CandiesStaxBuilder extends AbstractCandiesBuilder {
         while (reader.hasNext()) {
             type = reader.next();
             switch (type) {
-                case XMLStreamConstants.START_ELEMENT -> {
+                case XMLStreamConstants.START_ELEMENT : {
                     name = reader.getLocalName();
                     CandyXmlTag tag = CandyXmlTag.getCandyXmlTag(name);
                     switch (tag) {
-                        case CARBOHYDRATES -> value.setCarbohydrates(Integer.parseInt(getXMLText(reader)));
-                        case FATS -> value.setFats(Integer.parseInt(getXMLText(reader)));
-                        case PROTEINS -> value.setProteins(Integer.parseInt(getXMLText(reader)));
+                        case CARBOHYDRATES : value.setCarbohydrates(Integer.parseInt(getXMLText(reader)));
+                            break;
+                        case FATS : value.setFats(Integer.parseInt(getXMLText(reader)));
+                            break;
+                        case PROTEINS : value.setProteins(Integer.parseInt(getXMLText(reader)));
+                            break;
                     }
                 }
-                case XMLStreamConstants.END_ELEMENT -> {
+                break;
+                case XMLStreamConstants.END_ELEMENT : {
                     name = reader.getLocalName();
                     if (CandyXmlTag.VALUE == CandyXmlTag.getCandyXmlTag(name)) {
                         return value;
                     }
                 }
+                break;
             }
         }
         throw new XMLStreamException("End tag of Ingredient is not found");
@@ -143,7 +158,7 @@ public class CandiesStaxBuilder extends AbstractCandiesBuilder {
         while (reader.hasNext()) {
             type = reader.next();
             switch (type) {
-                case XMLStreamConstants.START_ELEMENT -> {
+                case XMLStreamConstants.START_ELEMENT : {
                     name = reader.getLocalName();
                     CandyXmlTag tag = CandyXmlTag.getCandyXmlTag(name);
                     if (CandyXmlTag.INGREDIENT == tag) {
@@ -151,13 +166,15 @@ public class CandiesStaxBuilder extends AbstractCandiesBuilder {
                         ingredients.add(ingredient);
                     }
                 }
-                case XMLStreamConstants.END_ELEMENT -> {
+                break;
+                case XMLStreamConstants.END_ELEMENT : {
                     name = reader.getLocalName();
                     CandyXmlTag tag = CandyXmlTag.getCandyXmlTag(name);
                     if (CandyXmlTag.INGREDIENTS == tag) {
                         return ingredients;
                     }
                 }
+                break;
             }
         }
         throw new XMLStreamException("End tag of Ingredients is not found");
@@ -170,21 +187,25 @@ public class CandiesStaxBuilder extends AbstractCandiesBuilder {
         while (reader.hasNext()) {
             type = reader.next();
             switch (type) {
-                case XMLStreamConstants.START_ELEMENT -> {
+                case XMLStreamConstants.START_ELEMENT : {
                     name = reader.getLocalName();
                     CandyXmlTag tag = CandyXmlTag.getCandyXmlTag(name);
                     switch (tag) {
-                        case INGREDIENT_NAME -> ingredient.setName(getXMLText(reader));
-                        case WEIGHT -> ingredient.setWeight(Integer.parseInt(getXMLText(reader)));
+                        case INGREDIENT_NAME : ingredient.setName(getXMLText(reader));
+                            break;
+                        case WEIGHT : ingredient.setWeight(Integer.parseInt(getXMLText(reader)));
+                            break;
                     }
                 }
-                case XMLStreamConstants.END_ELEMENT -> {
+                break;
+                case XMLStreamConstants.END_ELEMENT : {
                     name = reader.getLocalName();
                     CandyXmlTag tag = CandyXmlTag.getCandyXmlTag(name);
                     if (CandyXmlTag.INGREDIENT == tag) {
                         return ingredient;
                     }
                 }
+                break;
             }
         }
         throw new XMLStreamException("End tag of Ingredient is not found");

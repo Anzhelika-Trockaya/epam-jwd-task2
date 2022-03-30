@@ -84,8 +84,10 @@ public class CandyHandler extends DefaultHandler {
         String data = new String(ch, start, length).strip();
         if (currentXmlTag != null) {
             switch (currentXmlTag) {
-                case CANDY_NAME -> currentCandy.setName(data);
-                case CHOCOLATE_TYPE -> {
+                case CANDY_NAME:
+                    currentCandy.setName(data);
+                    break;
+                case CHOCOLATE_TYPE: {
                     currentChocolateCandy = (ChocolateCandy) currentCandy;
                     try {
                         currentChocolateCandy.setChocolateType(ChocolateType.getChocolateType(data));
@@ -93,41 +95,56 @@ public class CandyHandler extends DefaultHandler {
                         LOGGER.warn(exception);
                     }
                 }
-                case FLAVOR -> {
+                break;
+                case FLAVOR: {
                     currentCaramelCandy = (CaramelCandy) currentCandy;
                     currentCaramelCandy.setFlavor(data);
                 }
-                case LOLLIPOP -> {
+                break;
+                case LOLLIPOP: {
                     currentCaramelCandy = (CaramelCandy) currentCandy;
                     currentCaramelCandy.setLollipop(Boolean.parseBoolean(data));
                 }
-                case INGREDIENT_NAME -> currentIngredient.setName(data);
-                case WEIGHT -> currentIngredient.setWeight(Integer.parseInt(data));
-                case CARBOHYDRATES -> {
+                break;
+                case INGREDIENT_NAME:
+                    currentIngredient.setName(data);
+                    break;
+                case WEIGHT:
+                    currentIngredient.setWeight(Integer.parseInt(data));
+                    break;
+                case CARBOHYDRATES: {
                     Value value = currentCandy.getValue();
                     value.setCarbohydrates(Integer.parseInt(data));
                     currentCandy.setValue(value);
                 }
-                case FATS -> {
+                break;
+                case FATS: {
                     Value value = currentCandy.getValue();
                     value.setFats(Integer.parseInt(data));
                     currentCandy.setValue(value);
                 }
-                case PROTEINS -> {
+                break;
+                case PROTEINS: {
                     Value value = currentCandy.getValue();
                     value.setProteins(Integer.parseInt(data));
                     currentCandy.setValue(value);
                 }
-                case ENERGY -> currentCandy.setEnergy(Integer.parseInt(data));
-                case PRODUCTION -> {
+                break;
+                case ENERGY:
+                    currentCandy.setEnergy(Integer.parseInt(data));
+                    break;
+                case PRODUCTION: {
                     try {
                         currentCandy.setProduction(Production.getProduction(data));
                     } catch (ParseXMLException exception) {
                         LOGGER.warn(exception);
                     }
                 }
-                case EXPIRATION_DATE -> currentCandy.setExpirationDate(YearMonth.parse(data));
-                default -> {
+                break;
+                case EXPIRATION_DATE:
+                    currentCandy.setExpirationDate(YearMonth.parse(data));
+                    break;
+                default: {
                     LOGGER.error("Unknown tag " + currentXmlTag.name());
                     throw new EnumConstantNotPresentException(
                             currentXmlTag.getDeclaringClass(), currentXmlTag.name());

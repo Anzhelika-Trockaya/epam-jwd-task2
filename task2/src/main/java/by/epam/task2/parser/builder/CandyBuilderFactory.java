@@ -20,23 +20,23 @@ public class CandyBuilderFactory {
     public static AbstractCandiesBuilder createCandyBuilder(String typeParser) throws ParseXMLException {
         TypeParser type = TypeParser.valueOf(typeParser.toUpperCase());
         switch (type) {
-            case DOM -> {
+            case DOM : {
                 LOGGER.info("Created new CandiesDomBuilder");
                 return new CandiesDomBuilder();
             }
-            case SAX -> {
+            case SAX : {
                 LOGGER.info("Created new CandiesSaxBuilder");
                 return new CandiesSaxBuilder();
             }
-            case STAX -> {
+            case STAX : {
                 LOGGER.info("Created new CandiesStaxBuilder");
                 return new CandiesStaxBuilder();
             }
-            case JAXB -> {
+            case JAXB : {
                 LOGGER.info("Created new CandiesJaxbBuilder");
                 return new CandiesJaxbBuilder();
             }
-            default -> {
+            default : {
                 LOGGER.error("Enum constant not present. " + type.getDeclaringClass() + " " + type.name());
                 throw new ParseXMLException("Enum constant not present. " + type.getDeclaringClass() + " " + type.name());
             }
